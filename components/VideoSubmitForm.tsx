@@ -19,7 +19,6 @@ export default function VideoSubmitForm() {
   return (
     <form action={handleSubmit}>
       <input type="text" name="videoId" />
-      <input type="text" name="videoName" />
       <button type="submit">Submit</button>
     </form>
   );
