@@ -5,53 +5,38 @@ export default async function Page({ params }: { params: { id: string } }) {
   const { id } = await params;
   const url = "viewcount/" + id;
   const response = await get(url);
+  const jsonRes = await response.json();
 
-  let jsonRes = null;
   let viewCountList = [];
   let dateTimeList = [];
 
   if (response.ok) {
-    jsonRes = await response.json();
-    viewCountList = await createViewCountList(jsonRes);
-    dateTimeList = await createDateTimeList(jsonRes);
+    viewCountList = await createDataList(jsonRes, "viewCount");
+    dateTimeList = await createDataList(jsonRes, "dateTime");
   } else {
-    throw new Error("Data fetching error");
+    console.log(jsonRes["msg"]);
   }
 
-  // 차트 데이터
-  const data = createLineChartData(viewCountList, dateTimeList);
-  // 차트 옵션
-  const options = getLineChartOptions();
+  const lineChartData = createLineChartData(viewCountList, dateTimeList);
+  const lineChartoptions = getLineChartOptions();
 
   return (
     <div>
-      <p>{jsonRes[0]["videoName"]}</p>
-      <p>{jsonRes[0]["viewCount"]}</p>
-      <p>{jsonRes[0]["dateTime"]}</p>
-      <LineChart data={data} options={options} />
+      <LineChart data={lineChartData} options={lineChartoptions} />
     </div>
   );
 }
 
-async function createViewCountList(jsonRes) {
-  const viewCountData = [];
-  for (const d in jsonRes) {
-    viewCountData.push(Number(jsonRes[d]["viewCount"]));
+async function createDataList(jsonData: any, attribute: string) {
+  const dataList = [];
+  for (const i in jsonData) {
+    dataList.push(jsonData[i][attribute]);
   }
 
-  return viewCountData;
+  return dataList;
 }
 
-async function createDateTimeList(jsonRes) {
-  const DateTimeData = [];
-  for (const d in jsonRes) {
-    DateTimeData.push(jsonRes[d]["dateTime"]);
-  }
-
-  return DateTimeData;
-}
-
-function createLineChartData(viewCountList, dateTimeList) {
+function createLineChartData(viewCountList: number[], dateTimeList: any[]) {
   return {
     labels: dateTimeList,
     datasets: [
@@ -60,7 +45,6 @@ function createLineChartData(viewCountList, dateTimeList) {
         data: viewCountList,
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
-        tension: 0.4, // 곡선의 부드러움
       },
     ],
   };

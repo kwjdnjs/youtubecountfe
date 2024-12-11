@@ -9,7 +9,6 @@ export default function VideoSubmitForm() {
     const jsonRes = await response.json();
 
     if (response.ok) {
-      console.log(jsonRes);
       redirectViewcountPage(jsonRes["videoId"]);
     } else {
       console.log(jsonRes["msg"]);
