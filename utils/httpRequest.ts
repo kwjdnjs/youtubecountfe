@@ -1,8 +1,19 @@
-export async function get(loc: string) {
-  const url = process.env.BE_URL + loc;
+export async function get(path: string) {
+  const url = process.env.BE_URL + path;
+  try {
+    const response = await fetch(url);
+    const jsonRes = await response.json();
 
-  const response = await fetch(url);
-  return response;
+    if (response.ok) {
+      return { data: jsonRes, error: null };
+    } else {
+      console.error(jsonRes.msg);
+      return { data: null, error: jsonRes.msg };
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return { data: null, error: "Failed to fetch data." };
+  }
 }
 
 export async function post(loc: string, formData: FormData): Promise<any> {

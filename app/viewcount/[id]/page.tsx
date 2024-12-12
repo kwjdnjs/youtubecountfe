@@ -1,33 +1,43 @@
 import { get } from "@/utils/httpRequest";
 import LineChart from "@/components/LineChart";
+import ModalWrapper from "@/components/ModalWrapper";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = await params;
-  const url = "viewcount/" + id;
-  const response = await get(url);
-  const jsonRes = await response.json();
+  const { data, error } = await get(`viewcount/${id}`);
 
-  let viewCountList = [];
-  let dateTimeList = [];
+  let lineChartData = null;
+  let lineChartOptions = null;
 
-  if (response.ok) {
-    viewCountList = await createDataList(jsonRes, "viewCount");
-    dateTimeList = await createDataList(jsonRes, "dateTime");
-  } else {
-    console.log(jsonRes["msg"]);
+  if (data) {
+    const chartData = processChartData(data);
+    lineChartData = chartData.lineChartData;
+    lineChartOptions = chartData.lineChartOptions;
   }
-
-  const lineChartData = createLineChartData(viewCountList, dateTimeList);
-  const lineChartoptions = getLineChartOptions();
 
   return (
     <div>
-      <LineChart data={lineChartData} options={lineChartoptions} />
+      {lineChartData && lineChartOptions ? (
+        <LineChart data={lineChartData} options={lineChartOptions} />
+      ) : (
+        <p>Loading chart data...</p>
+      )}
+      <ModalWrapper error={error} />
     </div>
   );
 }
 
-async function createDataList(jsonData: any, attribute: string) {
+function processChartData(jsonRes) {
+  const viewCountList = createDataList(jsonRes, "viewCount");
+  const dateTimeList = createDataList(jsonRes, "dateTime");
+
+  const lineChartData = createLineChartData(viewCountList, dateTimeList);
+  const lineChartOptions = getLineChartOptions();
+
+  return { lineChartData, lineChartOptions };
+}
+
+function createDataList(jsonData: any, attribute: string) {
   const dataList = [];
   for (const i in jsonData) {
     dataList.push(jsonData[i][attribute]);
