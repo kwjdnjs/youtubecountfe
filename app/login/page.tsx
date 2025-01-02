@@ -7,7 +7,7 @@ let ACCESS_TOKEN = localStorage.getItem("accessToken");
 
 /** CREATE CUSTOM AXIOS INSTANCE */
 function post(url, data) {
-  fetch(`http://localhost:8080${url}`, {
+  return fetch(`http://localhost:8080${url}`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -19,7 +19,9 @@ function post(url, data) {
 const login = async ({ username, password }) => {
   const data = { username: username, password: password };
   const response = await post(`/api/v1/auth/login`, data);
-  return response.data;
+  const json = await response.json();
+  console.log(json);
+  return json;
 };
 
 export default function Page() {
@@ -37,9 +39,9 @@ export default function Page() {
     login(values)
       .then((response) => {
         localStorage.clear();
-        localStorage.setItem("tokenType", response.tokenType);
-        localStorage.setItem("accessToken", response.accessToken);
-        localStorage.setItem("refreshToken", response.refreshToken);
+        localStorage.setItem("tokenType", response["tokenType"]);
+        localStorage.setItem("accessToken", response["accessToken"]);
+        localStorage.setItem("refreshToken", response["refreshToken"]);
         window.location.href = `/home`;
       })
       .catch((error) => {
