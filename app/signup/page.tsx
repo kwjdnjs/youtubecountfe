@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const TOKEN_TYPE = localStorage.getItem("tokenType");
-let ACCESS_TOKEN = localStorage.getItem("accessToken");
+let TOKEN_TYPE = null;
+let ACCESS_TOKEN = null;
 
 /** CREATE CUSTOM AXIOS INSTANCE */
 function post(url, data) {
@@ -15,18 +15,22 @@ function post(url, data) {
     body: JSON.stringify(data),
   });
 }
-
-const login = async ({ username, password }) => {
+const signUp = async ({ username, password }) => {
   const data = { username: username, password: password };
-  const response = await post(`/api/v1/auth/login`, data);
+  const response = await post(`/api/v1/auth/signup`, data);
   return response.data;
 };
 
-export default function Page() {
+export default function SignUpPage() {
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    TOKEN_TYPE = localStorage.getItem("tokenType");
+    ACCESS_TOKEN = localStorage.getItem("accessToken");
+  }, []);
 
   const handleChange = async (e) => {
     setValues({ ...values, [e.target.id]: e.target.value });
@@ -34,13 +38,9 @@ export default function Page() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    login(values)
+    signUp(values)
       .then((response) => {
-        localStorage.clear();
-        localStorage.setItem("tokenType", response.tokenType);
-        localStorage.setItem("accessToken", response.accessToken);
-        localStorage.setItem("refreshToken", response.refreshToken);
-        window.location.href = `/home`;
+        console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -76,7 +76,7 @@ export default function Page() {
           </div>
           <div className="form-group" style={{ minWidth: "25vw" }}>
             <button type="submit" style={{ width: "100%" }}>
-              로그인
+              회원가입
             </button>
           </div>
         </form>
