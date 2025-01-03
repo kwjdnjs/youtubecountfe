@@ -1,28 +1,27 @@
-import { post } from "@/utils/httpRequest";
+import { formDataToObject, post } from "@/utils/httpRequest";
 import { redirect } from "next/navigation";
+import ModalWrapper from "./ModalWrapper";
 
 export default function VideoSubmitForm() {
   async function handleSubmit(formData: FormData) {
     "use server";
 
-    const response = await post("video", formData);
-    const jsonRes = await response.json();
+    const obj = formDataToObject(formData);
+    const { data, error } = await post("video", obj);
 
-    if (response.ok) {
-      redirectViewcountPage(jsonRes["videoId"]);
+    if (data) {
+      redirect(`/viewcount/${data["videoId"]}`);
     } else {
-      console.log(jsonRes["msg"]);
+      console.log(error);
     }
   }
 
   return (
-    <form action={handleSubmit}>
-      <input type="text" name="videoId" />
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <form action={handleSubmit}>
+        <input type="text" name="videoId" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   );
-}
-
-function redirectViewcountPage(videoId: string) {
-  redirect(`/viewcount/${videoId}`);
 }
