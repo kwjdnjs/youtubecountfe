@@ -1,28 +1,27 @@
 "use client";
 
+import { post } from "@/utils/httpRequest";
 import { useState } from "react";
 
-const TOKEN_TYPE = localStorage.getItem("tokenType");
-let ACCESS_TOKEN = localStorage.getItem("accessToken");
+const login = async ({ username, password }: any) => {
+  const postData = { username: username, password: password };
+  const { resData, error } = await post("v1/auth/login", postData);
 
-/** CREATE CUSTOM AXIOS INSTANCE */
-function post(url, data) {
-  return fetch(`http://localhost:8080${url}`, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-}
+  if (resData) {
+    saveToken(resData);
+  } else {
+    console.log(error);
+  }
 
-const login = async ({ username, password }) => {
-  const data = { username: username, password: password };
-  const response = await post(`/api/v1/auth/login`, data);
-  const json = await response.json();
-  console.log(json);
-  return json;
+  return null;
 };
+
+function saveToken(response: any) {
+  localStorage.clear();
+  localStorage.setItem("tokenType", response["tokenType"]);
+  localStorage.setItem("accessToken", response["accessToken"]);
+  localStorage.setItem("refreshToken", response["refreshToken"]);
+}
 
 export default function Page() {
   const [values, setValues] = useState({
@@ -30,23 +29,14 @@ export default function Page() {
     password: "",
   });
 
-  const handleChange = async (e) => {
+  const handleChange = async (e: any) => {
     setValues({ ...values, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    login(values)
-      .then((response) => {
-        localStorage.clear();
-        localStorage.setItem("tokenType", response["tokenType"]);
-        localStorage.setItem("accessToken", response["accessToken"]);
-        localStorage.setItem("refreshToken", response["refreshToken"]);
-        window.location.href = `/home`;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    await login(values);
   };
 
   return (

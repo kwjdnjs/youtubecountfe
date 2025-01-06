@@ -1,24 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { post } from "@/utils/httpRequest";
+import { useState } from "react";
 
-let TOKEN_TYPE = null;
-let ACCESS_TOKEN = null;
-
-/** CREATE CUSTOM AXIOS INSTANCE */
-function post(url, data) {
-  fetch(`http://localhost:8080${url}`, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-}
-const signUp = async ({ username, password }) => {
-  const data = { username: username, password: password };
-  const response = await post(`/api/v1/auth/signup`, data);
-  return response.data;
+const signUp = async ({ username, password }: any) => {
+  const postData = { username: username, password: password };
+  const { resData, error } = await post("v1/auth/signup", postData);
+  if (resData) {
+    console.log(resData);
+  } else {
+    console.log(error);
+  }
 };
 
 export default function SignUpPage() {
@@ -27,24 +19,13 @@ export default function SignUpPage() {
     password: "",
   });
 
-  useEffect(() => {
-    TOKEN_TYPE = localStorage.getItem("tokenType");
-    ACCESS_TOKEN = localStorage.getItem("accessToken");
-  }, []);
-
-  const handleChange = async (e) => {
+  const handleChange = async (e: any) => {
     setValues({ ...values, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    signUp(values)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    await signUp(values);
   };
 
   return (

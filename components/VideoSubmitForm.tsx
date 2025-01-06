@@ -7,10 +7,10 @@ export default function VideoSubmitForm() {
     "use server";
 
     const obj = formDataToObject(formData);
-    const { data, error } = await post("video", obj);
+    const { resData, error } = await post("video", obj);
 
-    if (data) {
-      redirect(`/viewcount/${data["videoId"]}`);
+    if (resData) {
+      redirect(`/viewcount/${resData["videoId"]}`);
     } else {
       console.log(error);
     }

@@ -1,23 +1,23 @@
-const BASE_URL = process.env.BE_URL || ""; // 기본 URL 설정
+const BASE_URL = process.env.NEXT_PUBLIC_BE_URL || ""; // 기본 URL 설정
 
 async function apiRequest(
   path: string,
-  options: RequestInit = {}
-): Promise<{ data: any | null; error: string | null }> {
+  requestInit: RequestInit = {}
+): Promise<{ resData: any | null; error: string | null }> {
   const url = BASE_URL + path;
 
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, requestInit);
     const jsonRes = await response.json();
 
     if (response.ok) {
-      return { data: jsonRes, error: null };
+      return { resData: jsonRes, error: null };
     } else {
-      return { data: null, error: jsonRes.msg };
+      return { resData: null, error: jsonRes.msg };
     }
   } catch (error) {
-    console.error("Network Error:", error);
-    return { data: null, error: "Network error occurred." };
+    console.log("Network Error:", error);
+    return { resData: null, error: "Network error occurred." };
   }
 }
 
