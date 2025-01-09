@@ -1,26 +1,15 @@
 "use client";
 
 import { post } from "@/utils/httpRequest";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 
-const login = async ({ username, password }: any) => {
-  const postData = { username: username, password: password };
-  const { resData, error } = await post("v1/auth/login", postData);
-
-  if (resData) {
-    saveToken(resData);
-  } else {
-    console.log(error);
-  }
-
-  return null;
-};
-
-function saveToken(response: any) {
+function saveTokenAndUsername(response: any) {
   localStorage.clear();
   localStorage.setItem("tokenType", response["tokenType"]);
   localStorage.setItem("accessToken", response["accessToken"]);
   localStorage.setItem("refreshToken", response["refreshToken"]);
+  localStorage.setItem("username", response["username"]);
 }
 
 export default function LoginForm() {
@@ -36,7 +25,14 @@ export default function LoginForm() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    await login(values);
+    const { resData, error } = await post("v1/auth/login", values);
+
+    if (resData) {
+      saveTokenAndUsername(resData);
+      redirect("/");
+    } else {
+      console.log(error);
+    }
   };
 
   return (
@@ -47,7 +43,7 @@ export default function LoginForm() {
       <div className="align-self-center">
         <form onSubmit={handleSubmit}>
           <div className="form-group" style={{ minWidth: "25vw" }}>
-            <label htmlFor="username">아이디</label>
+            <label htmlFor="username">이름</label>
             <input
               type="text"
               className="form-control"

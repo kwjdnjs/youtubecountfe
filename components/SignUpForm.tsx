@@ -3,6 +3,7 @@
 import { post } from "@/utils/httpRequest";
 import { useState } from "react";
 import ModalWrapper from "./ModalWrapper";
+import { redirect } from "next/navigation";
 
 export default function SignUpForm() {
   const [values, setValues] = useState({
@@ -21,6 +22,7 @@ export default function SignUpForm() {
     const { resData, error } = await post("v1/auth/signup", values);
     if (resData) {
       console.log(resData);
+      redirect("/signupsuccess");
     } else {
       setErr(error);
     }
