@@ -3,6 +3,7 @@
 import { post } from "@/utils/httpRequest";
 import { redirect } from "next/navigation";
 import { useState } from "react";
+import ModalWrapper from "./ModalWrapper";
 
 function saveTokenAndUsername(response: any) {
   localStorage.clear();
@@ -17,6 +18,7 @@ export default function LoginForm() {
     username: "",
     password: "",
   });
+  const [err, setErr] = useState(null);
 
   const handleChange = async (e: any) => {
     setValues({ ...values, [e.target.id]: e.target.value });
@@ -32,6 +34,7 @@ export default function LoginForm() {
       redirect("/");
     } else {
       console.log(error);
+      setErr(error);
     }
   };
 
@@ -40,6 +43,7 @@ export default function LoginForm() {
       className="d-flex justify-content-center"
       style={{ minHeight: "100vh" }}
     >
+      <ModalWrapper error={err} />
       <div className="align-self-center">
         <form onSubmit={handleSubmit}>
           <div className="form-group" style={{ minWidth: "25vw" }}>
