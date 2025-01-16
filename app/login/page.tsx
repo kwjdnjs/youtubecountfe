@@ -1,5 +1,11 @@
 import LoginForm from "@/components/LoginForm";
+import SignUpButton from "@/components/SignUpButton";
 
 export default function Page() {
-  return <LoginForm />;
+  return (
+    <div>
+      <LoginForm />
+      <SignUpButton />
+    </div>
+  );
 }

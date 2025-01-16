@@ -31,7 +31,7 @@ export default function LoginForm() {
 
     if (resData) {
       saveTokenAndUsername(resData);
-      redirect("/");
+      window.location.href = "/";
     } else {
       console.log(error);
       setErr(error);
@@ -39,10 +39,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div
-      className="d-flex justify-content-center"
-      style={{ minHeight: "100vh" }}
-    >
+    <div className="d-flex justify-content-center">
       <ModalWrapper error={err} />
       <div className="align-self-center">
         <form onSubmit={handleSubmit}>

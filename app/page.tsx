@@ -1,13 +1,10 @@
-import LoginBtnWrapper from "@/components/LoginBtnWrapper";
-import LogoutButton from "@/components/LogoutButton";
-import Username from "@/components/Username";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <div>
       <h1 className="text-blue-500">Hello</h1>
-      <Username />
-      <LoginBtnWrapper />
+      <Link href="videolist">비디오 리스트</Link>
     </div>
   );
 }
