@@ -1,7 +1,7 @@
 "use client";
 
 import { authenticatedGet } from "@/utils/httpRequest";
-import ModalWrapper from "./ModalWrapper";
+import ModalWrapper from "./modal/ModalWrapper";
 import LineChart from "./LineChart";
 import { useEffect, useState } from "react";
 

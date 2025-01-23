@@ -2,7 +2,7 @@
 
 import { authenticatedGet } from "@/utils/httpRequest";
 import { useEffect, useState } from "react";
-import ModalWrapper from "./ModalWrapper";
+import ModalWrapper from "../modal/ModalWrapper";
 import VideoListItem from "./VideoListItem";
 
 export default function VideoList() {

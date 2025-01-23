@@ -1,4 +1,4 @@
-import VideoList from "@/components/VideoList";
+import VideoList from "@/components/videoList/VideoList";
 import Link from "next/link";
 
 export default function Page() {

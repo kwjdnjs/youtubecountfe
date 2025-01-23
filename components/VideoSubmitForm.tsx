@@ -2,7 +2,7 @@
 
 import { authenticatedPost, formDataToObject, post } from "@/utils/httpRequest";
 import { redirect } from "next/navigation";
-import ModalWrapper from "./ModalWrapper";
+import ModalWrapper from "./modal/ModalWrapper";
 import { useState } from "react";
 
 export default function VideoSubmitForm() {

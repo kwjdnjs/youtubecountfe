@@ -1,4 +1,4 @@
-import LoginBtnWrapper from "./LoginBtnWrapper";
+import LoginBtnWrapper from "./login/LoginBtnWrapper";
 import Username from "./Username";
 
 export default function NavBar() {
