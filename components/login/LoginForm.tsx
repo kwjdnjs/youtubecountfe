@@ -26,14 +26,12 @@ export default function LoginForm() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const { resData, error } = await post("v1/auth/login", values);
-
-    if (resData) {
-      saveTokenAndUsername(resData);
+    try {
+      const response = await post("v1/auth/login", values);
+      saveTokenAndUsername(response);
       window.location.href = "/";
-    } else {
-      console.log(error);
-      setErr(error);
+    } catch (e) {
+      setErr(e.toString());
     }
   };
 

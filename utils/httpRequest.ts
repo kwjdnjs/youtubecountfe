@@ -1,36 +1,39 @@
 const BASE_URL = process.env.NEXT_PUBLIC_BE_URL || ""; // 기본 URL 설정
 
-async function apiRequest(
-  path: string,
-  requestInit: RequestInit = {}
-): Promise<{ resData: any | null; error: string | null }> {
+async function apiRequest(path: string, requestInit: RequestInit = {}) {
   const url = BASE_URL + path;
 
-  try {
-    const response = await fetch(url, requestInit);
-    const jsonRes = await response.json();
-    console.log(jsonRes);
+  const response = await fetch(url, requestInit);
+  const jsonRes = await response.json();
 
-    if (response.ok) {
-      return { resData: jsonRes, error: null };
-    } else {
-      return { resData: null, error: jsonRes.msg };
-    }
-  } catch (error) {
-    console.log("Network Error:", error);
-    return { resData: null, error: "Network error occurred." };
+  if (response.ok) {
+    return jsonRes;
+  } else {
+    throw new Error(jsonRes.msg);
   }
+}
+
+function getAccessToken() {
+  let tokenType = null;
+  let accessToken = null;
+  try {
+    tokenType = localStorage.getItem("tokenType");
+    accessToken = localStorage.getItem("accessToken");
+  } catch (e) {
+    console.log(e);
+    throw new Error("Can't find access token");
+  }
+
+  return { tokenType, accessToken };
 }
 
 export async function get(path: string) {
   return apiRequest(path);
 }
 
-export async function authenticatedGet(
-  path: string,
-  tokenType: string | null,
-  accessToken: string | null
-) {
+export async function authenticatedGet(path: string) {
+  const { tokenType, accessToken } = getAccessToken();
+
   return apiRequest(path, {
     method: "GET",
     headers: {
@@ -48,16 +51,9 @@ export async function post(path: string, objectData: object) {
   });
 }
 
-export function formDataToObject(formData: FormData) {
-  return Object.fromEntries(formData.entries());
-}
+export async function authenticatedPost(path: string, objectData: object) {
+  const { tokenType, accessToken } = getAccessToken();
 
-export async function authenticatedPost(
-  path: string,
-  objectData: object,
-  tokenType: string | null,
-  accessToken: string | null
-) {
   return apiRequest(path, {
     method: "POST",
     headers: {
@@ -66,4 +62,8 @@ export async function authenticatedPost(
     },
     body: JSON.stringify(objectData),
   });
+}
+
+export function formDataToObject(formData: FormData) {
+  return Object.fromEntries(formData.entries());
 }

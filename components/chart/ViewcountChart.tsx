@@ -1,7 +1,7 @@
 "use client";
 
 import { authenticatedGet } from "@/utils/httpRequest";
-import ModalWrapper from "./modal/ModalWrapper";
+import ModalWrapper from "../modal/ModalWrapper";
 import LineChart from "./LineChart";
 import { useEffect, useState } from "react";
 
@@ -11,16 +11,12 @@ export default function ViewcountChart({ id }: any) {
 
   useEffect(() => {
     async function fetchData() {
-      const tokenType = localStorage.getItem("tokenType");
-      const accessToken = localStorage.getItem("accessToken");
-
-      const result = await authenticatedGet(
-        `viewcount/${id}`,
-        tokenType,
-        accessToken
-      );
-      setData(result.resData);
-      setError(result.error);
+      try {
+        const response = await authenticatedGet(`viewcount/${id}`);
+        setData(response);
+      } catch (e) {
+        setError(e.toString());
+      }
     }
     fetchData();
   }, []);

@@ -11,17 +11,12 @@ export default function VideoList() {
 
   useEffect(() => {
     async function fetch() {
-      const tokenType = localStorage.getItem("tokenType");
-      const accessToken = localStorage.getItem("accessToken");
-
-      const result = await authenticatedGet(
-        "videolist",
-        tokenType,
-        accessToken
-      );
-
-      setData(result.resData);
-      setError(result.error);
+      try {
+        const response = await authenticatedGet("videolist");
+        setData(response);
+      } catch (e) {
+        setError(e.toString());
+      }
     }
 
     fetch();

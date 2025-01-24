@@ -1,30 +1,23 @@
 "use client";
 
-import { authenticatedPost, formDataToObject, post } from "@/utils/httpRequest";
-import { redirect } from "next/navigation";
+import { authenticatedPost, formDataToObject } from "@/utils/httpRequest";
+import { useRouter } from "next/navigation";
 import ModalWrapper from "./modal/ModalWrapper";
 import { useState } from "react";
 
 export default function VideoSubmitForm() {
+  const router = useRouter();
   const [err, setErr] = useState(null);
 
   async function handleSubmit(formData: FormData) {
-    const tokenType = localStorage.getItem("tokenType");
-    const accessToken = localStorage.getItem("accessToken");
+    try {
+      const obj = formDataToObject(formData);
+      const response = await authenticatedPost("video", obj);
 
-    const obj = formDataToObject(formData);
-    const { resData, error } = await authenticatedPost(
-      "video",
-      obj,
-      tokenType,
-      accessToken
-    );
-
-    if (resData) {
-      redirect(`/viewcount/${resData["videoId"]}`);
-    } else {
-      setErr(error);
-      console.log(error);
+      router.push(`/viewcount/${response["videoId"]}`);
+    } catch (e) {
+      console.log(e);
+      setErr(e.toString());
     }
   }
 

@@ -19,12 +19,15 @@ export default function SignUpForm() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const { resData, error } = await post("v1/auth/signup", values);
-    if (resData) {
-      console.log(resData);
-      redirect("/signupsuccess");
-    } else {
-      setErr(error);
+
+    try {
+      const response = await post("v1/auth/signup", values);
+      if (response) {
+        console.log(response);
+        redirect("/signupsuccess");
+      }
+    } catch (e) {
+      setErr(e.toString());
     }
   };
 

@@ -1,4 +1,4 @@
-import ViewcountChart from "@/components/ViewcountChart";
+import ViewcountChart from "@/components/chart/ViewcountChart";
 import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: string } }) {
