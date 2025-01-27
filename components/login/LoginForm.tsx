@@ -36,32 +36,45 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="d-flex justify-content-center">
+    <div className="flex justify-center">
       <ModalWrapper error={err} />
-      <div className="align-self-center">
-        <form onSubmit={handleSubmit}>
-          <div className="form-group" style={{ minWidth: "25vw" }}>
-            <label htmlFor="username">이름</label>
+      <div className="flex items-center">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="min-w-[25vw]">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700"
+            >
+              이름
+            </label>
             <input
               type="text"
-              className="form-control"
               id="username"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               onChange={handleChange}
               value={values.username}
             />
           </div>
-          <div className="form-group" style={{ minWidth: "25vw" }}>
-            <label htmlFor="password">비밀번호</label>
+          <div className="min-w-[25vw]">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              비밀번호
+            </label>
             <input
               type="password"
-              className="form-control"
               id="password"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               onChange={handleChange}
               value={values.password}
             />
           </div>
-          <div className="form-group" style={{ minWidth: "25vw" }}>
-            <button type="submit" style={{ width: "100%" }}>
+          <div className="min-w-[25vw]">
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
               로그인
             </button>
           </div>

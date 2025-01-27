@@ -27,7 +27,7 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = ({ data, options }) => {
+const LineChart = ({ data, options }: any) => {
   return <Line data={data} options={options} />;
 };
 

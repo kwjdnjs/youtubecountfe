@@ -3,5 +3,5 @@
 export default function Username() {
   const username = localStorage.getItem("username");
 
-  return <span>{username}</span>;
+  return <span>{username} 님</span>;
 }
