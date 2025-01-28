@@ -23,16 +23,23 @@ export default function VideoList() {
   }, []);
 
   return (
-    <div>
+    <div className="p-6">
       <ModalWrapper error={error} />
-      {data &&
-        data.map((item, index) => (
-          <VideoListItem
-            key={index}
-            videoId={item.videoId}
-            videoName={item.videoName}
-          />
-        ))}
+      {data && (
+        <div className="space-y-4 mt-6 max-w-3xl">
+          {data.map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300"
+            >
+              <VideoListItem
+                videoId={item.videoId}
+                videoName={item.videoName}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

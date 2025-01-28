@@ -8,7 +8,7 @@ import "./globals.css";
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-gray-100">
         <NavBar />
         <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID || ""}>
           {children}
