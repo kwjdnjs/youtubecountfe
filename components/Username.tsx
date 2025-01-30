@@ -1,11 +1,9 @@
 "use client";
 
-export default function Username() {
-  let username = null;
+import useUsername from "@/hooks/useUsername";
 
-  try {
-    username = localStorage.getItem("username");
-  } catch (e) {}
+export default function Username() {
+  const username = useUsername();
 
   return <span>{username} 님</span>;
 }
