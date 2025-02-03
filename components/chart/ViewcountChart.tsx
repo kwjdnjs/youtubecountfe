@@ -4,8 +4,11 @@ import { authenticatedGet } from "@/utils/httpRequest";
 import ModalWrapper from "../modal/ModalWrapper";
 import LineChart from "./LineChart";
 import { useEffect, useState } from "react";
+import useRedirectIfLoggedOut from "@/hooks/useRedirectIfLoggedOut";
 
 export default function ViewcountChart({ id }: any) {
+  useRedirectIfLoggedOut();
+
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 

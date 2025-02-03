@@ -1,11 +1,11 @@
 "use client";
 
-import useLoginStatus from "@/hooks/useLoginStatus";
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
+import useAuth from "@/hooks/useAuth";
 
 export default function LoginBtnWrapper() {
-  const isLoggedIn = useLoginStatus();
+  const [isLoggedIn, isLoading] = useAuth();
 
   if (isLoggedIn) {
     return <LogoutButton />;

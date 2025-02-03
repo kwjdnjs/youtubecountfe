@@ -4,10 +4,13 @@ import { authenticatedGet } from "@/utils/httpRequest";
 import { useEffect, useState } from "react";
 import ModalWrapper from "../modal/ModalWrapper";
 import VideoListItem from "./VideoListItem";
+import useRedirectIfLoggedOut from "@/hooks/useRedirectIfLoggedOut";
 
 export default function VideoList() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+
+  useRedirectIfLoggedOut();
 
   useEffect(() => {
     async function fetch() {
