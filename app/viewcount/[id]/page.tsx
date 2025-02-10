@@ -1,8 +1,8 @@
 import ViewcountChart from "@/components/chart/ViewcountChart";
 import Link from "next/link";
 
-export default function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function Page({ params }: any) {
+  const { id } = await params;
 
   return (
     <div>
