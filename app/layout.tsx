@@ -14,6 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           http-equiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
+        <title>youtube view</title>
       </Head>
       <body className="bg-gray-100">
         <NavBar />
